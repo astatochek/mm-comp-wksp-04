@@ -18,6 +18,25 @@ def Lagrange(hublist: list):
     return func
 
 
+def Newton(hublist: list):
+
+    N = len(hublist)
+
+    DivDif = [[0 for i in range(N)] for i in range(N)]
+
+    for i in range(N):
+        DivDif[i][0] = F(hublist[i])
+
+    for i in range(1, N):
+        for j in range(N-i):
+            DivDif[j][i] = (DivDif[j+1][i-1] - DivDif[j][i-1]) / (hublist[j+i] - hublist[j])
+
+    def func(x: float):
+        return sum([DivDif[0][i] * np.prod([x - hublist[j] for j in range(i)]) for i in range(N)])
+
+    return func
+
+
 m = 10
 
 Zj = []
@@ -34,19 +53,33 @@ PrepareHubs(m, a, b)
 for hub in Zj:
     print(f"f({hub}) = {F(hub)}")
 
-n = 8
-
 while True:
-    X = input()
-    try:
-        float(X)
-    except ValueError:
-        print(f">>  Wrong Input: {X} is not a float value")
+    print(f">>  Insert X in [{a}, {b}] and n in [1, ... , {m}]")
+    line = input().split()
+    if len(line) < 2:
+        print(f">>  Wrong Input: not enough values")
         continue
-    X = float(X)
+    try:
+        float(line[0])
+    except ValueError:
+        print(f">>  Wrong Input: {line[0]} is not a float value")
+        continue
+    try:
+        int(line[1])
+    except ValueError:
+        print(f">>  Wrong Input: {line[1]} is not an int value")
+        continue
+
+    X = float(line[0])
+    n = int(line[1])
+
     if X < a or X > b:
         print(f">>  Wrong Input: {X} is not in [{a}, {b}]")
         continue
+    if n < 1 or n > m:
+        print(f">>  Wrong Input: {n} is not in [1, ... , {m}]")
+        continue
+
     Xj = [hub for hub in Zj]
 
 
@@ -59,17 +92,21 @@ while True:
     # print(Xj)
 
     L = Lagrange(Xj)
+    N = Newton(Xj)
     print(f"|F({X}) - L({X})| = {abs(F(X) - L(X))}")
+    print(f"|F({X}) - N({X})| = {abs(F(X) - N(X))}")
 
     ptsnum = 100
     ep = 0.5
     Ox = np.linspace(min(Xj)-ep, max(Xj)+ep, ptsnum)
     y1 = [F(val) for val in Ox]
     y2 = [L(val) for val in Ox]
+    # y3 = [N(val) for val in Ox]
 
     fig, ax = plt.subplots()
     ax.plot(Ox, y1, color="blue", alpha=0.5, label="F(x)")
-    ax.plot(Ox, y2, color="red", alpha=0.5, label="L(x)")
+    ax.plot(Ox, y2, color="red", alpha=0.5, label="P(x)")
+    # ax.plot(Ox, y3, color="green", alpha=0.5, label="P(x)")
     plt.scatter(Xj, [F(xi) for xi in Xj], color="blue", sizes=[5.0 for xi in Xj])
     plt.scatter(X, F(X), color="red", sizes=[10.0])
     ax.set_xlabel("x")
