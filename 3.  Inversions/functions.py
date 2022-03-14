@@ -23,10 +23,10 @@ def promptPair() -> list:
 
 
 def promptM() -> int:
-    print(f">>    Insert values for m")
+    print(f">>    Insert value for m")
     inpt = input()
     try:
-        m = int(inpt[0]) - 1
+        m = int(inpt)
     except ValueError:
         print(f">>    Error: {inpt} is not an int value")
         return promptM()
@@ -36,3 +36,26 @@ def promptM() -> int:
     return m
 
 
+def promptN(m: int) -> int:
+    print(f">>    Insert value for n")
+    inpt = input()
+    try:
+        n = int(inpt)
+    except ValueError:
+        print(f">>    Error: {inpt} is not an int value")
+        return promptN(m)
+    if n >= m:
+        print(f">>    Error: {n} >= {m} and n must be less than m")
+        return promptN(m)
+    return n
+
+
+def promptFloat() -> float:
+    print(f">>    Insert value for Y")
+    inpt = input()
+    try:
+        Y = float(inpt)
+    except ValueError:
+        print(f">>    Error: {inpt} is not a float value")
+        return promptFloat()
+    return Y
