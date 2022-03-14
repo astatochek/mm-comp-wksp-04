@@ -3,8 +3,8 @@ import numpy as np
 
 
 def F(x: float):
-    return np.cos(x) + 2 * x
-    # return np.sin(x)
+    # return 1 / (1 + 25*x**2)
+    return np.sin(x)
 
 
 def Lagrange(hublist: list):
@@ -37,7 +37,7 @@ def Newton(hublist: list):
     return func
 
 
-m = 13
+m = 40
 
 Zj = []
 
@@ -48,7 +48,8 @@ def PrepareHubs(num: int, left: float, right: float):
         Zj.append(left + step * i)
 
 
-a, b = 0.5, 1.8
+a, b = -10, 10
+
 PrepareHubs(m, a, b)
 for hub in Zj:
     print(f"f({hub}) = {F(hub)}")
@@ -88,17 +89,18 @@ while True:
 
 
     Xj.sort(key=cmp)
-    Xj = Xj[:n]
+    Xj = Xj[:n + 1]
     # print(Xj)
 
     L = Lagrange(Xj)
     N = Newton(Xj)
+    print(f"F({X}) = {F(X)}, L({X}) = {L(X)}, N({X}) = {N(X)}")
     print(f"|F({X}) - L({X})| = {abs(F(X) - L(X))}")
     print(f"|F({X}) - N({X})| = {abs(F(X) - N(X))}")
 
-    ptsnum = 100
-    ep = 0.5
-    Ox = np.linspace(min(Xj)-ep, max(Xj)+ep, ptsnum)
+    ptsnum = 1000
+    ep = 2
+    Ox = np.linspace(min(Zj)-ep, max(Zj)+ep, ptsnum)
     y1 = [F(val) for val in Ox]
     y2 = [L(val) for val in Ox]
     # y3 = [N(val) for val in Ox]
@@ -107,6 +109,8 @@ while True:
     ax.plot(Ox, y1, color="blue", alpha=0.5, label="F(x)")
     ax.plot(Ox, y2, color="red", alpha=0.5, label="P(x)")
     # ax.plot(Ox, y3, color="green", alpha=0.5, label="P(x)")
+    [ax.vlines(xi, min(min(y1), min(y2)), F(xi), color="blue", alpha=0.2, linestyle="--") for xi in Xj]
+    ax.vlines(X, min(min(y1), min(y2)), F(X), color="red", alpha=0.2, linestyle="--")
     plt.scatter(Xj, [F(xi) for xi in Xj], color="blue", sizes=[5.0 for xi in Xj])
     plt.scatter(X, F(X), color="red", sizes=[10.0])
     ax.set_xlabel("x")
