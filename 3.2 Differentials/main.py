@@ -6,14 +6,17 @@ from functions import promptM, promptA, promptH
 
 def F(x: float) -> float:
     return np.exp(1.5 * x)
+    # return np.sin(10 * x)
 
 
 def dF(x: float) -> float:
     return 1.5 * np.exp(1.5 * x)
+    # return 10 * np.cos(10 * x)
 
 
 def ddF(x: float) -> float:
     return 2.25 * np.exp(1.5 * x)
+    # return -100 * np.sin(10 * x)
 
 
 def Lagrange(hublist: list):
@@ -32,12 +35,10 @@ def getFirstDerivative(f, segment: list, h: float):
     right = segment[1]
 
     def func(x: float) -> float:
-        if x <= left + 2 * h:
-            # return (-25 * f(x) + 48 * f(x + h) - 36 * f(x + 2 * h) + 16 * f(x + 3 * h) - 3 * f(x + 4 * h)) / (6 * h)
-            return (-3 * f(x) + 4 * f(x + h) - f(x + 2 * h)) / (2 * h)
-        if x >= right - 2 * h:
-            # return (-25 * f(x) + 48 * f(x - h) - 36 * f(x - 2 * h) + 16 * f(x - 3 * h) - 3 * f(x - 4 * h)) / (-6 * h)
-            return (3 * f(x) - 4 * f(x - h) + f(x - 2 * h)) / (2 * h)
+        if x <= left:
+            return (-25 * f(x) + 48 * f(x + h) - 36 * f(x + 2 * h) + 16 * f(x + 3 * h) - 3 * f(x + 4 * h)) / (12 * h)
+        if x >= right:
+            return (-25 * f(x) + 48 * f(x - h) - 36 * f(x - 2 * h) + 16 * f(x - 3 * h) - 3 * f(x - 4 * h)) / (-12 * h)
         return (f(x - 2 * h) - 8 * f(x - h) + 8 * f(x + h) - f(x + 2 * h)) / (12 * h)
 
     return func
@@ -79,7 +80,7 @@ df = pd.DataFrame(data, index=[f"X{i}" for i in range(m+1)])
 print(df)
 
 ptsnum = 1000
-ep = 0.3
+ep = 2 * h
 Ox = np.linspace(a - ep, a + h * m + ep, ptsnum)
 y1 = [dF(x) for x in Ox]
 y2 = [dL(x) for x in Ox]
@@ -105,10 +106,10 @@ y2 = [ddL(x) for x in Ox]
 fig, ax = plt.subplots()
 ax.plot(Ox, y1, color="blue", alpha=0.5, label="ddF(x)")
 ax.plot(Ox, y2, color="red", alpha=0.5, label="ddL(x)")
-plt.scatter([xy[0] for xy in XY], [ddF(xy[0]) for xy in XY], color="blue",
-            sizes=[5.0 for xy in XY])
-plt.scatter([xy[0] for xy in XY], [ddL(xy[0]) for xy in XY], color="red",
-            sizes=[5.0 for xy in XY])
+plt.scatter([xy[0] for xy in XY], [ddF(xy[0]) for xy in XY],
+            color="blue", sizes=[5.0 for xy in XY])
+plt.scatter([xy[0] for xy in XY], [ddL(xy[0]) for xy in XY],
+            color="red", sizes=[5.0 for xy in XY])
 [ax.vlines(xy[0], min(min(y1), min(y2)), max(ddF(xy[0]), ddL(xy[0])),
            color="blue", alpha=0.2, linestyle="--") for xy in XY]
 ax.set_xlabel("x")
