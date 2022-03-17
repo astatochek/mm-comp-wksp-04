@@ -5,18 +5,18 @@ from functions import promptM, promptA, promptH
 
 
 def F(x: float) -> float:
-    return np.exp(1.5 * x)
-    # return np.sin(10 * x)
+    # return np.exp(1.5 * x)
+    return np.cos(x) + 2* x
 
 
 def dF(x: float) -> float:
-    return 1.5 * np.exp(1.5 * x)
-    # return 10 * np.cos(10 * x)
+    # return 1.5 * np.exp(1.5 * x)
+    return -np.sin(x) + 2
 
 
 def ddF(x: float) -> float:
-    return 2.25 * np.exp(1.5 * x)
-    # return -100 * np.sin(10 * x)
+    # return 2.25 * np.exp(1.5 * x)
+    return -np.cos(x)
 
 
 def Lagrange(hublist: list):

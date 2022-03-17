@@ -92,7 +92,10 @@ while True:
         return abs(val[0] - Y)
 
 
+    XYj = [zy for zy in ZYj]
+
     if isMonotonic(F, [a, b]):
+        #                                          1st Method
         YXj = [[zy[1], zy[0]] for zy in ZYj]
         YXj.sort(key=cmp)
         YXj = YXj[:n + 1]
@@ -103,11 +106,15 @@ while True:
         print(f"L({Y}) = {X}")
         print(f"|F({X}) - {Y}| = {abs(F(X) - Y)}")
 
-    n = promptN(m, False)
+        #                                          2nd Method
+        n = promptN(m, False)
+
+        XYj.sort(key=cmp)
+        XYj = XYj[:n + 1]
+    else:
+        n = m
+
     e = promptE()
-    XYj = [zy for zy in ZYj]
-    XYj.sort(key=cmp)
-    XYj = XYj[:n + 1]
 
     L = Lagrange(XYj)
     Func = getF(L, Y)
