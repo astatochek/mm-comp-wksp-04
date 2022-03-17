@@ -36,6 +36,18 @@ def promptM() -> int:
     return m
 
 
+def promptE() -> int:
+    print(f">>    Insert p: epsilon = 10^(-p)")
+    inpt = input()
+    try:
+        p = int(inpt)
+    except ValueError:
+        print(f">>    Error: {inpt} is not an int value")
+        return promptM()
+
+    return 10**(-p)
+
+
 def promptN(m: int, inverse: bool) -> int:
     line = ""
     if inverse:

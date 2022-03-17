@@ -1,7 +1,6 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
-from functions import promptPair, promptM, promptN, promptFloat
+from functions import promptPair, promptM, promptN, promptFloat, promptE
 
 
 def F(x: float) -> float:
@@ -39,13 +38,13 @@ def getSections(f, section: list):
     return res
 
 
-def Secants(f, segment: list):
+def Secants(f, segment: list, ep: float):
     x0 = segment[0]
     x1 = segment[1]
     xp = x0
     xc = x1
     xn = xc - (f(xc) / (f(xc) - f(xp))) * (xc - xp)
-    while abs(xn - xc) >= 10**(-8):
+    while abs(xn - xc) >= ep:
         xn, xc, xp = xn - (f(xn) / (f(xn) - f(xc))) * (xn - xc), xn, xc
     return xn
 
@@ -82,40 +81,43 @@ data = {'Xi': [zy[0] for zy in ZYj], 'F(Xi)': [zy[1] for zy in ZYj]}
 df = pd.DataFrame(data)
 print(df)
 
-Y = promptFloat()
+while True:
 
-n = promptN(m, True)
+    Y = promptFloat()
 
-
-def cmp(val):
-    return abs(val[0] - Y)
+    n = promptN(m, True)
 
 
-if isMonotonic(F, [a, b]):
-    YXj = [[zy[1], zy[0]] for zy in ZYj]
-    YXj.sort(key=cmp)
-    YXj = YXj[:n + 1]
+    def cmp(val):
+        return abs(val[0] - Y)
 
-    L = Lagrange(YXj)
-    X = L(Y)
-    print("\nMethod 1:")
-    print(f"invPn({Y}) = {X}")
-    print(f"|F({X}) - {Y}| = {abs(F(X) - Y)}\n")
 
-n = promptN(m, False)
-XYj = [zy for zy in ZYj]
-XYj.sort(key=cmp)
-XYj = XYj[:n + 1]
+    if isMonotonic(F, [a, b]):
+        YXj = [[zy[1], zy[0]] for zy in ZYj]
+        YXj.sort(key=cmp)
+        YXj = YXj[:n + 1]
 
-L = Lagrange(XYj)
-Func = getF(L, Y)
-Sections = getSections(Func, [a, b])
-Results = [Secants(Func, sec) for sec in Sections]
+        L = Lagrange(YXj)
+        X = L(Y)
+        print("Method 1:")
+        print(f"L({Y}) = {X}")
+        print(f"|F({X}) - {Y}| = {abs(F(X) - Y)}")
 
-print("Method 2:")
-data = {'X': Results, '|F(X) - Y|': [abs(F(x) - Y) for x in Results]}
-df = pd.DataFrame(data)
-print(df)
+    n = promptN(m, False)
+    e = promptE()
+    XYj = [zy for zy in ZYj]
+    XYj.sort(key=cmp)
+    XYj = XYj[:n + 1]
+
+    L = Lagrange(XYj)
+    Func = getF(L, Y)
+    Sections = getSections(Func, [a, b])
+    Results = [Secants(Func, sec, e) for sec in Sections]
+
+    print("Method 2:")
+    data = {'X': Results, '|F(X) - Y|': [abs(F(x) - Y) for x in Results]}
+    df = pd.DataFrame(data)
+    print(df)
 
 
 
