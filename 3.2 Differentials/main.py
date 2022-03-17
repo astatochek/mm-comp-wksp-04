@@ -75,8 +75,6 @@ y2 = [dL(x) for x in Ox]
 fig, ax = plt.subplots()
 ax.plot(Ox, y1, color="blue", alpha=0.5, label="dF(x)")
 ax.plot(Ox, y2, color="red", alpha=0.5, label="dL(x)")
-#[ax.vlines(xy[0], min(min(y1), min(y2)), dF(xi), color="blue", alpha=0.2, linestyle="--") for xi in Xj]
-#ax.vlines(X, min(min(y1), min(y2)), dF(X), color="red", alpha=0.2, linestyle="--")
 plt.scatter([xy[0] for xy in XY], [dF(xy[0]) for xy in XY], color="blue", sizes=[5.0 for xy in XY])
 ax.set_xlabel("x")
 ax.set_ylabel("y")
