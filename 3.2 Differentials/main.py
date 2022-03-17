@@ -33,9 +33,11 @@ def getFirstDerivative(f, segment: list, h: float):
 
     def func(x: float) -> float:
         if x <= left:
-            return (-25 * f(x) + 48 * f(x + h) - 36 * f(x + 2 * h) + 16 * f(x + 3 * h) - 3 * f(x + 4 * h)) / (6 * h)
+            # return (-25 * f(x) + 48 * f(x + h) - 36 * f(x + 2 * h) + 16 * f(x + 3 * h) - 3 * f(x + 4 * h)) / (6 * h)
+            return (-3 * f(x) + 4 * f(x + h) - f(x + 2 * h)) / (2 * h)
         if x >= right:
-            return (-25 * f(x) + 48 * f(x - h) - 36 * f(x - 2 * h) + 16 * f(x - 3 * h) - 3 * f(x - 4 * h)) / (-6 * h)
+            # return (-25 * f(x) + 48 * f(x - h) - 36 * f(x - 2 * h) + 16 * f(x - 3 * h) - 3 * f(x - 4 * h)) / (-6 * h)
+            return (3 * f(x) - 4 * f(x - h) + f(x - 2 * h)) / (2 * h)
         return (f(x - 2 * h) - 8 * f(x - h) + 8 * f(x + h) - f(x + 2 * h)) / (12 * h)
 
     return func
