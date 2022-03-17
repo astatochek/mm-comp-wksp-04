@@ -50,6 +50,25 @@ def Secants(f, segment: list):
     return xn
 
 
+def isMonotonic(f, segment: list):
+    left = segment[0]
+    right = segment[1]
+    num = 100
+    pr = left
+    nx = pr + (right - left) / num
+    if f(pr) > f(nx):
+        flag = True
+    else:
+        flag = False
+    for _ in range(num-1):
+        nx = pr + (right - left) / num
+        if (flag and f(pr) > f(nx)) or (not flag and f(pr) <= f(nx)):
+            pr = nx
+        else:
+            return False
+    return True
+
+
 a, b = promptPair()
 
 m = promptM()
@@ -63,24 +82,25 @@ data = {'Xi': [zy[0] for zy in ZYj], 'F(Xi)': [zy[1] for zy in ZYj]}
 df = pd.DataFrame(data)
 print(df)
 
-n = promptN(m, True)
-
 Y = promptFloat()
+
+n = promptN(m, True)
 
 
 def cmp(val):
     return abs(val[0] - Y)
 
 
-YXj = [[zy[1], zy[0]] for zy in ZYj]
-YXj.sort(key=cmp)
-YXj = YXj[:n + 1]
+if isMonotonic(F, [a, b]):
+    YXj = [[zy[1], zy[0]] for zy in ZYj]
+    YXj.sort(key=cmp)
+    YXj = YXj[:n + 1]
 
-L = Lagrange(YXj)
-X = L(Y)
-print("\nMethod 1:")
-print(f"invPn({Y}) = {X}")
-print(f"|F({X}) - {Y}| = {abs(F(X) - Y)}\n")
+    L = Lagrange(YXj)
+    X = L(Y)
+    print("\nMethod 1:")
+    print(f"invPn({Y}) = {X}")
+    print(f"|F({X}) - {Y}| = {abs(F(X) - Y)}\n")
 
 n = promptN(m, False)
 XYj = [zy for zy in ZYj]
@@ -93,6 +113,9 @@ Sections = getSections(Func, [a, b])
 Results = [Secants(Func, sec) for sec in Sections]
 
 print("Method 2:")
+data = {'X': Results, '|F(X) - Y|': [abs(F(x) - Y) for x in Results]}
+df = pd.DataFrame(data)
+print(df)
 
 
 
