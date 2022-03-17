@@ -36,17 +36,20 @@ def promptM() -> int:
     return m
 
 
-def promptN(m: int) -> int:
-    print(f">>    Insert value for n - degree of an interpolation polynome")
+def promptN(m: int, inverse: bool) -> int:
+    line = ""
+    if inverse:
+        line = " inverse"
+    print(f">>    Insert value for n - degree of an{line} interpolation polynome")
     inpt = input()
     try:
         n = int(inpt)
     except ValueError:
         print(f">>    Error: {inpt} is not an int value")
-        return promptN(m)
+        return promptN(m, inverse)
     if n > m:
         print(f">>    Error: {n} > {m} and n must be less than of equal to m")
-        return promptN(m)
+        return promptN(m, inverse)
     return n
 
 
