@@ -1,3 +1,4 @@
+import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from functions import promptPair, promptM, promptN, promptFloat
@@ -26,7 +27,10 @@ h = (b - a) / m
 ZYj = []
 for i in range(m+1):
     ZYj.append([a + i * h, F(a + i * h)])
-    print(f"F({ZYj[-1][0]}) = {ZYj[-1][1]}")
+
+data = {'Xi': [zy[0] for zy in ZYj], 'F(Xi)': [zy[1] for zy in ZYj]}
+df = pd.DataFrame(data)
+print(df)
 
 n = promptN(m)
 

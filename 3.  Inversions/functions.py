@@ -23,29 +23,29 @@ def promptPair() -> list:
 
 
 def promptM() -> int:
-    print(f">>    Insert value for m")
+    print(f">>    Insert m+1 - the number of points")
     inpt = input()
     try:
-        m = int(inpt)
+        m = int(inpt) - 1
     except ValueError:
         print(f">>    Error: {inpt} is not an int value")
         return promptM()
-    if m < 10:
-        print(f">>    Error: {m} < 10 and m must be more or equal to 10")
+    if m < 9:
+        print(f">>    Error: {m+1} < 10 and m+1 must be more or equal to 10")
         return promptM()
     return m
 
 
 def promptN(m: int) -> int:
-    print(f">>    Insert value for n")
+    print(f">>    Insert value for n - degree of an interpolation polynome")
     inpt = input()
     try:
         n = int(inpt)
     except ValueError:
         print(f">>    Error: {inpt} is not an int value")
         return promptN(m)
-    if n >= m:
-        print(f">>    Error: {n} >= {m} and n must be less than m")
+    if n > m:
+        print(f">>    Error: {n} > {m} and n must be less than of equal to m")
         return promptN(m)
     return n
 
