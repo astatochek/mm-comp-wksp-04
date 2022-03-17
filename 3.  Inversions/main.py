@@ -25,7 +25,21 @@ def getF(f, val: float):
     return func
 
 
-def Secants(segment: list, f):
+def getSections(f, section: list):
+    left = section[0]
+    right = section[1]
+    res = []
+    num = 100
+    pr = left
+    for _ in range(num):
+        nx = pr + (right - left) / num
+        if f(nx) * f(pr) <= 0:
+            res.append([pr, nx])
+        pr = nx
+    return res
+
+
+def Secants(f, segment: list):
     x0 = segment[0]
     x1 = segment[1]
     xp = x0
@@ -75,6 +89,10 @@ XYj = XYj[:n + 1]
 
 L = Lagrange(XYj)
 Func = getF(L, Y)
+Sections = getSections(Func, [a, b])
+Results = [Secants(Func, sec) for sec in Sections]
+
+print("Method 2:")
 
 
 
