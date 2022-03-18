@@ -4,7 +4,7 @@ from functions import promptPair, promptM, promptN, promptFloat, promptE
 
 
 def F(x: float) -> float:
-    return np.cos(x) + 2*x
+    return np.cos(x)
 
 
 def Lagrange(hublist: list):
@@ -85,8 +85,6 @@ while True:
 
     Y = promptFloat()
 
-    n = promptN(m, True)
-
 
     def cmp(val):
         return abs(val[0] - Y)
@@ -96,6 +94,7 @@ while True:
 
     if isMonotonic(F, [a, b]):
         #                                          1st Method
+        n = promptN(m, True)
         YXj = [[zy[1], zy[0]] for zy in ZYj]
         YXj.sort(key=cmp)
         YXj = YXj[:n + 1]
@@ -123,8 +122,10 @@ while True:
 
     print("Method 2:")
     data = {'X': Results, '|F(X) - Y|': [abs(F(x) - Y) for x in Results]}
+    # print(f"X: {Results[0]}")
     df = pd.DataFrame(data)
     print(df)
+
 
 
 

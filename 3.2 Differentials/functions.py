@@ -1,3 +1,5 @@
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 def promptM() -> int:
@@ -37,5 +39,6 @@ def promptH() -> float:
         print(f">>    Error: {inpt} must be more than 0")
         return promptH()
     return h
+
 
 
