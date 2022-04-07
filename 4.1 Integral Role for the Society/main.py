@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as ptch
 import pandas as pd
 from functions import promptPair
 
@@ -103,12 +104,20 @@ def printGraph(f, a: float, b: float, expected: float):
 
     fig, ax = plt.subplots()
     ax.plot(X, y, color="blue", alpha=0.5, label=f"{f.__name__}(x)")
-    ax.plot(X, Ox, color="black", alpha=0.5)
+    ax.plot(X, Ox, color="black")
 
     X = [x for x in X if a <= x <= b]
     y = [f(x) for x in X]
     Ox = [0 for _ in X]
 
+    # ax.add_patch(ptch.Rectangle((a, 0), b - a, f(a), edgecolor="#1207ff", facecolor="#1207ff",
+    #                             fill=True, alpha=0.2, label=f"{round(KFL(f, a, b), 3)}"))
+    # ax.add_patch(ptch.Rectangle((a, 0), b - a, f(b), edgecolor="#ff07eb", facecolor="#ff07eb",
+    #                             fill=True, alpha=0.2, label=f"{round(KFR(f, a, b), 3)}"))
+    # ax.add_patch(ptch.Rectangle((a, 0), b - a, f((a + b) / 2), edgecolor="#fcff07", facecolor="#fcff07",
+    #                             fill=True, alpha=0.2, label=f"{round(KFM(f, a, b), 3)}"))
+    # ax.add_patch(ptch.Polygon(((a, 0), (a, f(a)), (b, f(b)), (b, 0)), edgecolor="#1207ff", facecolor="#1207ff",
+    #                              fill=True, alpha=0.2, label=f"{round(KFM(f, a, b), 3)}"))
     ax.fill_between(X, Ox, y, facecolor="red", alpha=0.2, label=f"{round(expected, 3)}")
     ax.vlines(a, min(f(a), 0), max(f(a), 0), color="blue", alpha=0.2, linestyle="--")
     ax.vlines(b, min(f(b), 0), max(f(b), 0), color="blue", alpha=0.2, linestyle="--")
