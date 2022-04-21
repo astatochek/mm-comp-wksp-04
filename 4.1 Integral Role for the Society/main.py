@@ -6,7 +6,6 @@ from functions import promptPair
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
-pd.options.display.float_format = '{:.16f}'.format
 
 
 def F(x: float) -> float:
@@ -81,13 +80,13 @@ def printData(name: str, f, intf, a: float, b: float):
     print(f"\nФункция: f(x) = {name}")
     expected = intf(b) - intf(a)
     data = {
-        "Значение интеграла": [expected, 0],
-        "КФ левого прямоугольника": [KFL(f, a, b), abs(expected - KFL(f, a, b))],
-        "КФ правого прямоугольника": [KFR(f, a, b), abs(expected - KFR(f, a, b))],
-        "КФ среднего прямоугольника": [KFM(f, a, b), abs(expected - KFM(f, a, b))],
-        "КФ трапеции": [KFT(f, a, b), abs(expected - KFT(f, a, b))],
-        "КФ Симпсона": [KFS(f, a, b), abs(expected - KFS(f, a, b))],
-        "КФ 3/8": [KF38(f, a, b), abs(expected - KF38(f, a, b))]
+        "Значение интеграла": np.array([expected, 0]),
+        "КФ левого прямоугольника": np.array([KFL(f, a, b), abs(expected - KFL(f, a, b))]),
+        "КФ правого прямоугольника": np.array([KFR(f, a, b), abs(expected - KFR(f, a, b))]),
+        "КФ среднего прямоугольника": np.array([KFM(f, a, b), abs(expected - KFM(f, a, b))]),
+        "КФ трапеции": np.array([KFT(f, a, b), abs(expected - KFT(f, a, b))]),
+        "КФ Симпсона": np.array([KFS(f, a, b), abs(expected - KFS(f, a, b))]),
+        "КФ 3/8": np.array([KF38(f, a, b), abs(expected - KF38(f, a, b))])
     }
     df = pd.DataFrame(data, index=["Значение", "Погрешность"])
     print(df)
